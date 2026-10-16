@@ -1,14 +1,15 @@
 // public/i18n.js - Arayüz dil desteği (tr / en). Diğer betiklerden önce yüklenir.
 (function (global) {
   const STORAGE_KEY = 'freeai.lang';
-  const SUPPORTED = ['tr', 'en'];
+  const SUPPORTED = ['en', 'tr'];
+  const DEFAULT_LANG = 'en';
 
   function detectLang() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (SUPPORTED.includes(saved)) return saved;
     } catch {}
-    return String(navigator.language || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+    return DEFAULT_LANG;
   }
 
   const lang = detectLang();
@@ -541,7 +542,7 @@
   };
 
   function t(key, vars) {
-    let s = DICT[lang][key] ?? DICT.tr[key] ?? key;
+    let s = DICT[lang][key] ?? DICT[DEFAULT_LANG][key] ?? key;
     if (vars) s = s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? String(vars[k]) : m));
     return s;
   }

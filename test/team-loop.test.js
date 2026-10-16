@@ -9,7 +9,7 @@ const EventEmitter = require('node:events');
 
 const DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'freeai-test-'));
 process.env.FREEAI_DATA_DIR = DATA_DIR;
-const { TeamOrchestrator, TeamStore, PO_TURN_CAP, ROLE_TOTAL_CAP, inferMessageKind, isTaskMessage } = require('../team.js');
+const { TeamOrchestrator, TeamStore, PO_TURN_CAP, ROLE_TOTAL_CAP, inferMessageKind, isTaskMessage, rolePromptText } = require('../team.js');
 
 const PROJECT_DIR = path.join(DATA_DIR, 'project');
 fs.mkdirSync(PROJECT_DIR, { recursive: true });
@@ -216,6 +216,16 @@ test('PO kendine @@SEND yazarsa kullanıcıya gider; to=system yok sayılır ve 
   assert.match(toUser[0].text, /rapor bu/);
   assert.ok(!toUser.some((m) => /system/i.test(m.text)), 'sisteme yazılan mesaj kullanıcıya düşmemeli');
   assert.equal(turns.length, 1, 'PO bir kez daha dürtülmemeli');
+  orch.disposeAll();
+});
+
+test('varsayılan dil İngilizce; dil alanı olmayan eski ekipler Türkçe kalır', () => {
+  const { orch } = makeOrchestrator(() => '@@IDLE');
+  const team = orch.createTeam({ name: 'Default', projectPath: PROJECT_DIR, roles: [{ preset: 'po', provider: 'groq', model: 'mock' }] });
+  assert.equal(team.lang, 'en');
+  assert.equal(team.board.status, 'The project has not started yet.');
+  const legacy = { ...team, lang: undefined, name: 'Legacy' };
+  assert.match(rolePromptText(legacy, legacy.roles[0]), /Türkçe yaz/);
   orch.disposeAll();
 });
 

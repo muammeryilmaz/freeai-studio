@@ -13,13 +13,13 @@ const THINKING_LEVELS = ['off', 'minimal', 'low', 'medium', 'high', 'xhigh', 'ma
 const AGENT_IDLE_MS = 10 * 60 * 1000;
 
 /** Ekibin dili: kurulurken seçilir; eski ekiplerde alan yoksa Türkçe. */
-const teamLang = (team) => normalizeLang(team?.lang || 'tr');
+const teamLang = (team) => normalizeLang(team?.lang || 'tr'); // Dil alanı olmayan eski ekipler Türkçe kurulmuştu
 const T = (team) => TEXT[teamLang(team)];
 const rolePresets = (lang) => ROLE_PRESETS_BY_LANG[normalizeLang(lang)];
-const ROLE_PRESETS = ROLE_PRESETS_BY_LANG.tr;
+const ROLE_PRESETS = ROLE_PRESETS_BY_LANG.en;
 
 /** Role özel çalışma rehberi — mevcut ekiplerde de geçerli olması için çalışma anında eklenir. */
-function roleGuidance(role, lang = 'tr') {
+function roleGuidance(role, lang = 'en') {
   const guides = ROLE_GUIDANCE[normalizeLang(lang)];
   return (role.isPO ? guides.po : guides[role.preset]) || '';
 }

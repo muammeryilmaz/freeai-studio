@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="page.chatTitle">FreeAI Studio — Sohbet</title>
+  <title data-i18n="page.chatTitle">FreeAI Studio — Chat</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
-      <button id="newChatBtn" class="new-chat-btn" data-i18n="chat.new">+ Yeni sohbet</button>
-      <a href="/team.html" class="nav-page-btn" data-i18n="nav.teams" data-i18n-title="nav.teamsTitle" title="Agile Ekip ve Çoklu Ajan Çalışma Odasına Git">👥 Agile Ekipleri →</a>
+      <button id="newChatBtn" class="new-chat-btn" data-i18n="chat.new">+ New chat</button>
+      <a href="/team.html" class="nav-page-btn" data-i18n="nav.teams" data-i18n-title="nav.teamsTitle" title="Go to the Agile team and multi-agent workspace">👥 Agile Teams →</a>
 
       <div class="sidebar-section">
-        <div class="sidebar-section-title" data-i18n="chat.listTitle">SOHBETLER</div>
+        <div class="sidebar-section-title" data-i18n="chat.listTitle">CHATS</div>
         <nav id="chatList" class="chat-list"></nav>
       </div>
 
       <div class="sidebar-footer">
-        <button id="settingsBtn" class="settings-btn" data-i18n="common.settings">⚙ Ayarlar</button>
-        <select id="langSelect" class="lang-select" data-i18n-title="lang.title" title="Arayüz dili / Interface language">
-          <option value="tr">TR</option>
+        <button id="settingsBtn" class="settings-btn" data-i18n="common.settings">⚙ Settings</button>
+        <select id="langSelect" class="lang-select" data-i18n-title="lang.title" title="Interface language / Arayüz dili">
           <option value="en">EN</option>
+          <option value="tr">TR</option>
         </select>
       </div>
     </aside>
@@ -29,22 +29,22 @@
     <main id="chatView" class="main">
       <header class="topbar">
         <div class="selectors">
-          <select id="providerSelect" data-i18n-title="chat.provider" title="Sağlayıcı"></select>
+          <select id="providerSelect" data-i18n-title="chat.provider" title="Provider"></select>
           <select id="modelSelect" data-i18n-title="chat.model" title="Model"></select>
-          <select id="thinkingSelect" class="thinking-select hidden" data-i18n-title="thinking.selectTitle" title="Thinking (düşünme) seviyesi"></select>
-          <button id="testModelsBtn" class="test-btn" data-i18n="chat.testModels">Modelleri test et</button>
+          <select id="thinkingSelect" class="thinking-select hidden" data-i18n-title="thinking.selectTitle" title="Thinking level"></select>
+          <button id="testModelsBtn" class="test-btn" data-i18n="chat.testModels">Test models</button>
           <span id="testStatus" class="test-status"></span>
         </div>
         <div id="providerNote" class="provider-note"></div>
       </header>
 
       <div class="mode-bar">
-        <span id="chatModeBadge" class="mode-badge normal" title="Mesajlar seçili sağlayıcıya doğrudan gönderilir">💬 Normal Sohbet</span>
-        <button id="projectBtn" class="mini-btn" data-i18n="common.pickFolder" data-i18n-title="chat.pickFolderTitle" title="Pi ajanının çalışacağı proje klasörünü seç">📂 Proje Klasörü Seç</button>
+        <span id="chatModeBadge" class="mode-badge normal" title="Messages go directly to the selected provider.">💬 Plain Chat</span>
+        <button id="projectBtn" class="mini-btn" data-i18n="common.pickFolder" data-i18n-title="chat.pickFolderTitle" title="Select the project folder the Pi agent will work in">📂 Select Project Folder</button>
         <span id="projectChip" class="project-chip hidden">
           <span class="icon">📁</span>
           <span id="projectChipPath"></span>
-          <button id="clearProjectBtn" data-i18n-title="chat.clearFolder" title="Proje klasörünü kaldır">✕</button>
+          <button id="clearProjectBtn" data-i18n-title="chat.clearFolder" title="Remove project folder">✕</button>
         </span>
         <span id="modeHint" class="mode-hint"></span>
       </div>
@@ -55,10 +55,10 @@
         <div id="attachments" class="attachments"></div>
         <div id="composerHint" class="composer-hint"></div>
         <footer class="composer">
-          <button id="attachBtn" class="attach-btn" data-i18n-title="chat.attachTitle" title="Görsel / dosya ekle (yapıştırma ve sürükle-bırak da çalışır)">📎</button>
+          <button id="attachBtn" class="attach-btn" data-i18n-title="chat.attachTitle" title="Attach an image / file (paste and drag-and-drop also work)">📎</button>
           <input id="fileInput" type="file" multiple hidden />
-          <textarea id="input" rows="1" data-i18n-placeholder="chat.inputPlaceholder" placeholder="Mesaj yaz... (Enter gönderir, Shift+Enter satır atlar)"></textarea>
-          <button id="sendBtn" class="send-btn" data-i18n="common.send">Gönder</button>
+          <textarea id="input" rows="1" data-i18n-placeholder="chat.inputPlaceholder" placeholder="Type a message... (Enter sends, Shift+Enter for a new line)"></textarea>
+          <button id="sendBtn" class="send-btn" data-i18n="common.send">Send</button>
         </footer>
       </div>
     </main>
@@ -68,10 +68,10 @@
   <div id="settingsModal" class="modal-overlay hidden">
     <div class="modal">
       <div class="modal-header">
-        <h2 data-i18n="settings.title">Ayarlar — API Anahtarları</h2>
+        <h2 data-i18n="settings.title">Settings — API Keys</h2>
         <button id="closeSettingsBtn" class="icon-btn">✕</button>
       </div>
-      <p class="modal-info" data-i18n-html="settings.info">Anahtarlar yalnızca bu bilgisayardaki sunucuda saklanır (<code>data/keys.json</code>).</p>
+      <p class="modal-info" data-i18n-html="settings.info">Keys are stored only on the server on this computer (<code>data/keys.json</code>).</p>
       <div id="settingsRows" class="settings-rows"></div>
     </div>
   </div>
@@ -80,16 +80,16 @@
   <div id="folderBrowseModal" class="modal-overlay hidden">
     <div class="modal">
       <div class="modal-header">
-        <h2 data-i18n="common.pickFolder">📂 Proje Klasörü Seç</h2>
+        <h2 data-i18n="common.pickFolder">📂 Select Project Folder</h2>
         <button id="closeFolderBrowseBtn" class="icon-btn">✕</button>
       </div>
       <div class="browser-current-path">
-        <span data-i18n="folder.location">Konum:</span> <span id="browserCurrentPath"></span>
+        <span data-i18n="folder.location">Location:</span> <span id="browserCurrentPath"></span>
       </div>
       <div id="browserFolderList" class="browser-folder-list"></div>
       <div class="modal-footer-between">
-        <button id="browserUpBtn" class="mini-btn" data-i18n="folder.up">⬆ Üst Klasör</button>
-        <button id="selectCurrentFolderBtn" class="btn primary" data-i18n="folder.select">Bu Klasörü Seç</button>
+        <button id="browserUpBtn" class="mini-btn" data-i18n="folder.up">⬆ Parent Folder</button>
+        <button id="selectCurrentFolderBtn" class="btn primary" data-i18n="folder.select">Select This Folder</button>
       </div>
     </div>
   </div>

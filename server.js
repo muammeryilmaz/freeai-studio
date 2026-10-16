@@ -977,5 +977,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(msg(process.env.FREEAI_LANG || 'tr', 'listening', `http://${HOST}:${PORT}`));
+  console.log(msg(process.env.FREEAI_LANG || 'en', 'listening', `http://${HOST}:${PORT}`));
 });

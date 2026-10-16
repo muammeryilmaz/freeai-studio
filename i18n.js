@@ -1,18 +1,15 @@
 // Sunucu tarafı dil desteği: istek dilini belirler ve kullanıcıya dönen mesajları çevirir.
-const LANGS = ['tr', 'en'];
-const DEFAULT_LANG = 'tr';
+const LANGS = ['en', 'tr'];
+const DEFAULT_LANG = 'en';
 
 function normalizeLang(lang) {
   const l = String(lang || '').toLowerCase().slice(0, 2);
   return LANGS.includes(l) ? l : DEFAULT_LANG;
 }
 
-/** Arayüz her isteğe X-Lang başlığı ekler; yoksa Accept-Language'a bakılır. */
+/** Arayüz her isteğe X-Lang başlığı ekler; başlık yoksa varsayılan dil (İngilizce) kullanılır. */
 function requestLang(req) {
-  const explicit = req.headers['x-lang'];
-  if (explicit) return normalizeLang(explicit);
-  const accept = String(req.headers['accept-language'] || '').toLowerCase();
-  return accept.startsWith('tr') ? 'tr' : accept ? 'en' : DEFAULT_LANG;
+  return normalizeLang(req.headers['x-lang']);
 }
 
 const MESSAGES = {
