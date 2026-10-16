@@ -1,0 +1,1 @@
+﻿{ "name": "pi-vendored", "version": "1.0.2", "type": "module", "piConfig": { "configDir": ".pi" } }

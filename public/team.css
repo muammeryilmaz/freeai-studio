@@ -1,0 +1,418 @@
+/* public/team.css - Agile Ekip Sayfası Stilleri */
+
+.team-main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.create-team-view {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 40px;
+}
+
+.create-team-container {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.create-header h2 {
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.create-header .subtitle {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-card h3 {
+  font-size: 16px;
+  color: #a5b4fc;
+  margin-bottom: 4px;
+}
+
+.card-head-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.green-text { color: #10a37f; font-weight: 600; }
+.red-text { color: #e5484d; font-weight: 600; }
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d1d5db;
+}
+
+.path-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.path-input {
+  flex: 1;
+  font-family: Consolas, monospace;
+}
+
+.path-status-msg {
+  font-size: 12.5px;
+  padding: 4px 2px;
+}
+.path-status-msg.ok { color: #10a37f; }
+.path-status-msg.warn { color: #eab308; }
+.path-status-msg.err { color: #e5484d; }
+
+/* Rol Editör Listesi */
+.roles-editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.role-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.role-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.role-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.role-name-input {
+  width: 140px;
+}
+
+.role-provider-select {
+  width: 130px;
+}
+
+.role-model-select {
+  flex: 1;
+  min-width: 180px;
+}
+
+.role-mode-select {
+  width: 130px;
+  font-weight: 500;
+}
+
+.role-thinking-select {
+  width: 140px;
+  color: #c4b5fd;
+}
+
+.role-thinking-select.hidden { display: none !important; }
+
+.role-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 6px;
+}
+.role-delete-btn:hover { color: var(--error); }
+.role-card.po-card .role-delete-btn { visibility: hidden; }
+
+.role-card-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-dim);
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+  flex-wrap: wrap;
+}
+
+.tool-chk-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.tool-chk-label input { cursor: pointer; }
+
+.btn-large {
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Aktif Ekip Çalışma Odası */
+.active-team-view {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.team-path-label {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  font-family: Consolas, monospace;
+}
+
+.team-workspace {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.team-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--bg);
+}
+
+.sub-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Board View */
+.board-sub-view {
+  padding: 24px;
+  overflow-y: auto;
+  gap: 16px;
+}
+
+.board-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.status-box, .decisions-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 100px;
+  max-height: 250px;
+  overflow-y: auto;
+  font-size: 13.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.docs-browser {
+  display: flex;
+  gap: 16px;
+  min-height: 350px;
+  margin-top: 8px;
+}
+
+.docs-file-list {
+  width: 220px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 10px;
+  flex-shrink: 0;
+}
+
+.doc-file-btn {
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: Consolas, monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.doc-file-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); }
+.doc-file-btn.active { background: #3730a3; color: #fff; font-weight: 600; }
+
+.docs-file-viewer {
+  flex: 1;
+  overflow-y: auto;
+  padding-left: 6px;
+}
+
+/* Files Sub View */
+.files-sub-view {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.files-header {
+  margin-bottom: 16px;
+}
+
+.files-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.files-change-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-change-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.file-change-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.change-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.change-tag.write { background: #10a37f; color: #fff; }
+.change-tag.edit { background: #6366f1; color: #fff; }
+.file-change-path {
+  font-family: Consolas, monospace;
+  color: var(--text);
+}
+.file-change-time {
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+
+/* Folder Browser Modal */
+.browser-current-path {
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  background: var(--bg-input);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  word-break: break-all;
+}
+
+.browser-folder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 14px;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.folder-item:hover { background: var(--bg-input); color: var(--text); }
+
+.modal-footer-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Canlı aktivite: kim ne yapıyor */
+.team-activity {
+  font-size: 12px;
+  color: #e5a84d;
+  background: rgba(229, 168, 77, 0.08);
+  border: 1px solid rgba(229, 168, 77, 0.3);
+  border-radius: 6px;
+  padding: 3px 9px;
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge { cursor: help; }
+
+.channel-item.busy .name::after {
+  content: " ●";
+  color: var(--accent);
+  animation: busy-pulse 1s ease-in-out infinite;
+}
+
+@keyframes busy-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}

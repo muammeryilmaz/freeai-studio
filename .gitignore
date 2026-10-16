@@ -1,0 +1,24 @@
+# Çalışma verisi: API anahtarları, kimlik bilgileri (pi-agent/auth.json),
+# ekip sohbetleri ve oturum kayıtları. Kod bu klasörleri çalışma anında oluşturur.
+data/
+
+node_modules/
+
+# Ortam ve kimlik dosyaları
+.env
+.env.*
+*.pem
+*.key
+
+# Loglar
+*.log
+
+# Yerel deneme betikleri (çalışan sunucu ve data/keys.json gerektirir)
+scratch/
+
+# İşletim sistemi / editör dosyaları
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

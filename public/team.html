@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="page.teamTitle">FreeAI Studio — Agile Ekip Odası</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="team.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- SOL KENAR ÇUBUĞU -->
+    <aside class="sidebar">
+      <a href="/" class="nav-page-btn" data-i18n="nav.chat" data-i18n-title="nav.chatTitle" title="Normal Sohbet Sayfasına Dön">← Normal Sohbet</a>
+      <button id="newTeamBtn" class="new-team-btn" data-i18n="team.new">+ Yeni Ekip Kur</button>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-i18n="team.listTitle">AGİLE EKİPLERİ</div>
+        <nav id="teamList" class="team-list"></nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <button id="settingsBtn" class="settings-btn" data-i18n="common.settings">⚙ Ayarlar</button>
+        <select id="langSelect" class="lang-select" data-i18n-title="lang.title" title="Arayüz dili / Interface language">
+          <option value="tr">TR</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </aside>
+
+    <!-- ANA ALAN -->
+    <main class="main team-main">
+      <!-- 1. YENİ EKİP KURULUM EKRANI (TAM SAYFA) -->
+      <section id="createTeamView" class="create-team-view">
+        <div class="create-team-container">
+          <div class="create-header">
+            <h2 data-i18n="create.title">👥 Yeni Agile Ekibi Kur</h2>
+            <p class="subtitle" data-i18n-html="create.subtitle">
+              Ekip üyeleri bilgisayarınızdaki gerçek proje klasöründe birer CLI ajanı gibi çalışır.
+              Dosyaları inceler, analiz eder, <code>docs/agile/</code> dokümanlarını ve kodları oluşturur/düzenler.
+            </p>
+          </div>
+
+          <div class="form-card">
+            <h3 data-i18n="create.step1">1. Proje ve Çalışma Konumu</h3>
+            <div class="form-row">
+              <label for="teamNameInput" data-i18n="create.nameLabel">Ekip / Proje Adı:</label>
+              <input id="teamNameInput" type="text" class="text-input" data-i18n-placeholder="create.namePlaceholder" placeholder="Örn: E-Ticaret Mobil Uygulama Ekibi" />
+            </div>
+
+            <div class="form-row">
+              <label for="projectPathInput" data-i18n="create.pathLabel">Proje Klasörü (Ajanların Çalışacağı Konum):</label>
+              <div class="path-input-group">
+                <input id="projectPathInput" type="text" class="text-input path-input" data-i18n-placeholder="create.pathPlaceholder" placeholder="Örn: C:\git\projem veya /home/ben/projem" />
+                <button id="browseFolderBtn" class="mini-btn" type="button" data-i18n="create.browse">📂 Gözat</button>
+                <button id="validatePathBtn" class="mini-btn primary" type="button" data-i18n="create.validate">Doğrula</button>
+              </div>
+              <div id="pathValidationStatus" class="path-status-msg"></div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="card-head-between">
+              <div>
+                <h3 data-i18n="create.step2">2. Ekip Üyeleri ve Model Atamaları</h3>
+                <p class="card-desc" data-i18n-html="create.step2Desc">
+                  Model seçicisindeki <span class="green-text">yeşil</span> modeller çalışıyor, <span class="red-text">kırmızı</span> modeller ise hatalıdır.
+                  Araç çağırmayı desteklemeyen modeller için <strong>Metin Modu</strong> seçebilirsiniz.
+                </p>
+              </div>
+              <button id="addRoleBtn" class="mini-btn primary" data-i18n="create.addRole">+ Rol Ekle</button>
+            </div>
+
+            <div id="rolesList" class="roles-editor-list">
+              <!-- Dinamik rol satırları -->
+            </div>
+          </div>
+
+          <div class="create-actions">
+            <button id="submitCreateTeamBtn" class="btn primary btn-large" data-i18n="create.submit">🚀 Ekibi Oluştur ve Başla</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. AKTİF EKİP ÇALIŞMA EKRANI -->
+      <section id="activeTeamView" class="active-team-view hidden">
+        <header class="topbar team-topbar">
+          <div class="team-meta">
+            <div>
+              <h2 id="teamHeaderTitle" class="team-title"></h2>
+              <span id="teamHeaderPath" class="team-path-label"></span>
+            </div>
+            <span id="teamStatusBadge" class="status-badge idle"></span>
+            <span id="teamBudgetBadge" class="budget-badge" data-i18n-title="team.budgetTitle" title="Kullanıcı mesajı başına kullanılan tur / sınır"></span>
+            <span id="teamLangBadge" class="budget-badge" data-i18n-title="team.langBadgeTitle" title="Ekibin çalışma dili"></span>
+            <span id="teamActivity" class="team-activity hidden" data-i18n-title="team.activityTitle" title="Şu an çalışan rol ve yaptığı iş"></span>
+          </div>
+
+          <div class="team-actions">
+            <button id="teamPauseBtn" class="mini-ctrl-btn" data-i18n="team.pause" data-i18n-title="team.pauseTitle" title="Ekibi duraklat">⏸ Durdur</button>
+            <button id="teamResumeBtn" class="mini-ctrl-btn hidden" data-i18n="team.resume" data-i18n-title="team.resumeTitle" title="Ekibi devam ettir">▶ Devam</button>
+            <button id="teamExtendBtn" class="mini-ctrl-btn" data-i18n="team.extend" data-i18n-title="team.extendTitle" title="Tur bütçesini +25 uzat">🔄 +25 Tur</button>
+            <button id="teamEditRolesBtn" class="mini-ctrl-btn" data-i18n="team.editRoles" data-i18n-title="team.editRolesTitle" title="Modelleri veya rolleri güncelle">⚙ Rolleri Düzenle</button>
+            <button id="teamDeleteBtn" class="mini-ctrl-btn danger" data-i18n="common.delete" data-i18n-title="team.deleteTitle" title="Ekibi sil">Sil</button>
+          </div>
+        </header>
+
+        <div class="team-workspace">
+          <!-- İÇ ODA / KANAL LİSTESİ -->
+          <aside class="team-channels">
+            <div class="channel-group-title" data-i18n="ch.main">ANA İLETİŞİM</div>
+            <div class="channel-item active" data-channel="po">
+              <span class="icon">💬</span>
+              <span class="name" data-i18n="ch.po">#po (Sen ↔ PO)</span>
+            </div>
+
+            <div class="channel-group-title" data-i18n="ch.shared">ORTAK ODA</div>
+            <div class="channel-item" data-channel="team">
+              <span class="icon">📢</span>
+              <span class="name" data-i18n="ch.team">#ekip (Duyurular)</span>
+            </div>
+
+            <div class="channel-group-title" data-i18n="ch.dms">İKİLİ GÖRÜŞMELER (DM)</div>
+            <div id="teamDmList" class="dm-list"></div>
+
+            <div class="channel-group-title" data-i18n="ch.outputs">PROJE & ÇIKTILAR</div>
+            <div class="channel-item" data-view="board">
+              <span class="icon">📋</span>
+              <span class="name" data-i18n="ch.board">Proje Panosu</span>
+            </div>
+            <div class="channel-item" data-view="files">
+              <span class="icon">📁</span>
+              <span class="name" data-i18n="ch.files">Dosya Değişiklikleri</span>
+            </div>
+            <div class="channel-item" data-view="log">
+              <span class="icon">🔍</span>
+              <span class="name" data-i18n="ch.log">Canlı Akış & Log</span>
+            </div>
+          </aside>
+
+          <!-- İÇERİK ALANI -->
+          <div class="team-content-area">
+            <!-- 1. KANAL MESAJLARI GÖRÜNÜMÜ -->
+            <div id="channelSubView" class="sub-view channel-sub-view">
+              <div id="teamMessages" class="messages team-messages"></div>
+
+              <div id="teamComposerWrap" class="composer-wrap">
+                <div id="teamAttachments" class="attachments"></div>
+                <div id="teamComposerHint" class="composer-hint"></div>
+                <footer class="composer">
+                  <button id="teamAttachBtn" class="attach-btn" data-i18n-title="team.attachTitle" title="Görsel veya proje dosyası ekle">📎</button>
+                  <input id="teamFileInput" type="file" multiple hidden />
+                  <textarea id="teamInput" rows="1" data-i18n-placeholder="team.inputPlaceholder" placeholder="Product Owner'a gereksinimlerini veya sorularını yaz... (Enter gönderir)"></textarea>
+                  <button id="teamSendBtn" class="send-btn" data-i18n="common.send">Gönder</button>
+                </footer>
+              </div>
+              <div id="teamReadonlyNotice" class="readonly-notice hidden" data-i18n-html="team.readonly">
+                Bu kanal ekip üyeleri arasındaki iç görüşmedir (Salt okunur). Mesajlarını ve taleplerini <strong>#po</strong> kanalından ilet.
+              </div>
+            </div>
+
+            <!-- 2. PROJE PANOSU GÖRÜNÜMÜ -->
+            <div id="boardSubView" class="sub-view board-sub-view hidden">
+              <div class="board-topbar">
+                <h3 data-i18n-html="board.title">📋 Proje Panosu ve Dokümantasyon (<code>docs/agile/</code>)</h3>
+                <button id="refreshDocsBtn" class="mini-btn" data-i18n="board.refresh">🔄 Yenile</button>
+              </div>
+
+              <div class="board-grid">
+                <div class="board-card">
+                  <h4 data-i18n="board.status">🎯 Proje Genel Durumu (PO Özeti)</h4>
+                  <div id="boardStatusBox" class="status-box"></div>
+                </div>
+
+                <div class="board-card">
+                  <h4 data-i18n="board.decisions">⚖ Kesinleşen Kararlar (Karar Defteri)</h4>
+                  <div id="boardDecisionsBox" class="decisions-box"></div>
+                </div>
+              </div>
+
+              <div class="board-card docs-card">
+                <h4 data-i18n="board.docs">📑 Proje Dokümanları (Gerçek Dosyalar)</h4>
+                <div class="docs-browser">
+                  <div id="docsFileList" class="docs-file-list"></div>
+                  <div id="docsFileViewer" class="docs-file-viewer">
+                    <p class="empty-note" data-i18n="board.pickDoc">Görüntülemek için soldan bir doküman seçin.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. DOSYA DEĞİŞİKLİKLERİ GÖRÜNÜMÜ -->
+            <div id="filesSubView" class="sub-view files-sub-view hidden">
+              <div class="files-header">
+                <h3 data-i18n="files.title">📁 Ajanlar Tarafından Projede Yapılan Değişiklikler</h3>
+                <span class="files-subtitle" data-i18n="files.subtitle">Ajanların proje klasöründe oluşturduğu veya düzenlediği dosyaların akışı</span>
+              </div>
+              <div id="filesChangeList" class="files-change-list"></div>
+            </div>
+
+            <!-- 4. CANLI AKIŞ & LOG GÖRÜNÜMÜ -->
+            <div id="logSubView" class="sub-view log-sub-view hidden">
+              <div class="log-header">
+                <h3 data-i18n="log.title">🔍 Canlı Akış, Ham Promptlar ve Yanıtlar</h3>
+                <span class="log-subtitle" data-i18n="log.subtitle">Tüm LLM çağrıları, şablonlar, araç (read, write, edit, bash) çıktıları</span>
+              </div>
+              <div id="teamLogList" class="log-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- KLASÖR GEZGİNİ MODALI -->
+  <div id="folderBrowseModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 data-i18n="common.pickFolder">📂 Proje Klasörü Seç</h2>
+        <button id="closeFolderBrowseBtn" class="icon-btn">✕</button>
+      </div>
+      <div class="browser-current-path">
+        <span data-i18n="folder.location">Konum:</span> <span id="browserCurrentPath"></span>
+      </div>
+      <div id="browserFolderList" class="browser-folder-list"></div>
+      <div class="modal-footer-between">
+        <button id="browserUpBtn" class="mini-btn" data-i18n="folder.up">⬆ Üst Klasör</button>
+        <button id="selectCurrentFolderBtn" class="btn primary" data-i18n="folder.select">Bu Klasörü Seç</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROLLERİ DÜZENLE MODALI -->
+  <div id="editRolesModal" class="modal-overlay hidden">
+    <div class="modal modal-large">
+      <div class="modal-header">
+        <h2 data-i18n="roles.editTitle">⚙ Ekip Rollerini ve Modellerini Düzenle</h2>
+        <button id="closeEditRolesBtn" class="icon-btn">✕</button>
+      </div>
+      <div id="editRolesContainer" class="roles-editor-list" style="margin-top:14px;"></div>
+      <div class="form-footer">
+        <button id="cancelEditRolesBtn" class="btn secondary" data-i18n="common.cancel">İptal</button>
+        <button id="saveEditRolesBtn" class="btn primary" data-i18n="common.save">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AYARLAR MODALI -->
+  <div id="settingsModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 data-i18n="settings.title">Ayarlar — API Anahtarları</h2>
+        <button id="closeSettingsBtn" class="icon-btn">✕</button>
+      </div>
+      <p class="modal-info" data-i18n-html="settings.info">Anahtarlar yalnızca bu bilgisayardaki sunucuda saklanır (<code>data/keys.json</code>).</p>
+      <div id="settingsRows" class="settings-rows"></div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="common.js"></script>
+  <script src="team-page.js"></script>
+</body>
+</html>

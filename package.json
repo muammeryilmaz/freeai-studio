@@ -1,0 +1,13 @@
+{
+  "name": "freeai-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chat with free-tier AI providers and run an AI agile team on your own project (TR/EN)",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}
